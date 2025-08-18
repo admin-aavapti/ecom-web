@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 400px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      margin: 0;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    h2 {
+      margin: 0 0 15px 0;
+      text-align: center;
+      font-size: 18px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    input, select {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+    button {
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 10px;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .status {
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .status.idle { background: rgba(108, 117, 125, 0.3); }
+    .status.running { background: rgba(40, 167, 69, 0.3); animation: pulse 2s infinite; }
+    .status.error { background: rgba(220, 53, 69, 0.3); }
+    .status.complete { background: rgba(23, 162, 184, 0.3); }
+    
+    @keyframes pulse {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+    
+    .progress {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      height: 20px;
+      margin: 10px 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+      width: 0%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .stat-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 20px;
+      font-weight: bold;
+      display: block;
+    }
+    .stat-label {
+      font-size: 10px;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    #downloadBtn {
+      background: linear-gradient(45deg, #28a745, #20c997);
+    }
+    #stopBtn {
+      background: linear-gradient(45deg, #dc3545, #fd7e14);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🛒 Product Scraper</h2>
+    
+    <div class="form-group">
+      <label>Website</label>
+      <select id="website">
+        <option value="flipkart">Flipkart</option>
+        <option value="amazon">Amazon</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Search Query</label>
+      <input type="text" id="searchQuery" placeholder="e.g., Mobiles, Laptops, Books" />
+    </div>
+    
+    <div class="two-col">
+      <div class="form-group">
+        <label>Start Page</label>
+        <input type="number" id="startPage" value="1" min="1" />
+      </div>
+      <div class="form-group">
+        <label>End Page</label>
+        <input type="number" id="endPage" value="5" min="1" />
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Scrape Detail Pages</label>
+      <select id="scrapeDetails">
+        <option value="true">Yes (Slower, More Data)</option>
+        <option value="false">No (Faster, Basic Data)</option>
+      </select>
+    </div>
+    
+    <button id="startBtn">🚀 Start Scraping</button>
+    <button id="stopBtn" style="display: none;">⏹️ Stop Scraping</button>
+    
+    <div id="status" class="status idle">Ready to scrape</div>
+    
+    <div class="progress" style="display: none;">
+      <div id="progressBar" class="progress-bar">0%</div>
+    </div>
+    
+    <div class="stats">
+      <div class="stat-box">
+        <span id="pagesScraped" class="stat-number">0</span>
+        <div class="stat-label">Pages</div>
+      </div>
+      <div class="stat-box">
+        <span id="productsFound" class="stat-number">0</span>
+        <div class="stat-label">Products</div>
+      </div>
+    </div>
+    
+    <button id="downloadBtn" style="display: none;">📥 Download CSV</button>
+    <button id="clearBtn">🗑️ Clear Data</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

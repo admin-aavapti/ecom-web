@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Flipkart & Amazon Product Scraper",
+  "version": "1.0",
+  "description": "Scrape product data from Flipkart and Amazon with detailed information",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.flipkart.com/*",
+    "https://*.amazon.in/*",
+    "https://*.amazon.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.flipkart.com/*", "https://*.amazon.in/*", "https://*.amazon.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Product Scraper"
+  }
+}
